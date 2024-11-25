@@ -12,6 +12,6 @@ def selection_sort(arr):
 if __name__ == "__main__":
     arr = [64, 100, 35, 12, 22, 11, 90]
     selection_sort(arr)
-    print(arr)             
+    print("arr",arr)             
      
 # TC:O(N^2)(WORST CASE),SC : O(1)
