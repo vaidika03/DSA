@@ -414,4 +414,239 @@ if __name__ == "__main__":
     print("commonElements:",commonElements(a, b , c))
 
 #-----------------------------------------------------------------------------
+# #### **Dynamic Programming & Greedy Algorithms**
+# 1. Find the Peak Element Which Is Not Smaller Than Its Neighbors
+# 2. Find the Maximum Product Subarray
+# 3. Stock Span Problem
+# 4. Max Sum Path in Two Arrays
+# 5. Minimize the Maximum Difference Between the Heights
+# 6. Stock Buy and Sell Problem
+# 7. Find the Largest Sum Contiguous Subarray
+# 8. Find the Minimum Element in a Rotated and Sorted Array  
+# 1. Find the Peak Element Which Is Not Smaller Than Its Neighbors
+def peakElement(arr,n):
+    if n ==1:
+        return 0
+    if arr[0] > arr[1]:
+        return 0
+    if arr[n-1] > arr[n-2]:
+        return n-1
+    lo,hi = 0,n-1
+    mid = lo +(hi-lo)//2
+    while(lo <= hi):
+        mid = lo +(hi-lo)//2
+        if arr[mid] > arr[mid-1] and arr[mid] > arr[mid+1]:
+            return mid
+        elif arr[mid] < arr[mid+1]:
+            lo = mid+1
+        else:
+            hi = mid-1
+                
+if __name__ == "__main__":
+    arr = [1, 2, 4, 5, 7, 8, 3]
+    n = len(arr)
+    print("peakElement:",peakElement(arr,n))
     
+#----------------------------------------------------------
+# 2. Find the Maximum Product Subarray
+def maxProduct(arr,n):
+    resMax = float('-inf')
+    ltor,rtol = 1,1
+    for i in range(n):
+        if ltor == 0:
+            ltor =1
+        if rtol == 0:
+            rtol = 1
+        ltor *= arr[i]
+        j = n-i-1
+        rtol *= arr[j]
+        resMax = max(ltor,rtol,resMax)
+    return resMax
+"""
+def maxProduct(arr,n):
+    currMax = arr[0]
+    currMin = arr[0]
+    resMax = arr[0]
+    for i in range(1,n):
+        if arr[i]<0:
+            currMax,currMin = currMin,currMax
+        currMax = max(arr[i],currMax*arr[i])
+        currMin = min(arr[i],currMin*arr[i])
+        
+        resMax = max(currMax,resMax)
+    return resMax
+"""
+    
+if __name__ == "__main__":
+    arr = [-2, 6, -3, -10, 0, 2]
+    n = len(arr)
+    print("maxProduct:",maxProduct(arr,n))
+#------------------------------------------------------------------------
+# 3. Stock Span Problem
+def calculateSpan(price, n):
+    res = [0]*n
+    st = []
+    st.append(0)
+    res[0] = 1
+    for i in range(1,n):
+        while len(st)>0 and price[st[-1]] <= price[i]:
+            st.pop()
+        res[i] = i+1 if len(st) == 0 else (i-st[-1])
+        st.append(i)
+    return res    
+    
+if __name__ == "__main__":
+    price = [10, 4, 5, 90, 120, 80]
+    n = len(price)
+    print("calculateSpan",calculateSpan(price, n))
+#------------------------------------------------------------------------
+# # 4. Max Sum Path in Two Arrays
+"""
+def intersection_array(a,b):
+    a,b = set(a),set(b)
+    return list(a & b)
+
+def maxPathSum(arr1,arr2):
+    intersection = intersection_array(arr1,arr2)
+    idx = 0
+    i,j =0,0
+    maxSum = 0
+    while (idx < len(intersection)):
+        sum1,sum2=0,0
+        while(i<len(arr1) and arr1[i] <= intersection[idx]):
+            sum1+=arr1[i]
+            i+=1
+        while(j<len(arr2) and arr2[j] <= intersection[idx]):
+            sum2+=arr2[j]
+            j+=1  
+        maxSum += max(sum1,sum2)    
+        idx +=1
+        
+    sum1,sum2=0,0   
+    while(i<len(arr1)):
+        sum1+=arr1[i]
+        i+=1
+    while(j<len(arr2)):
+        sum2 += arr2[j]
+        j+=1
+    maxSum += max(sum1,sum2)        
+    return maxSum   
+"""
+def maxPathSum(arr1,arr2):
+    idx = 0
+    i,j =0,0
+    maxSum = 0
+    sum1,sum2 = 0,0
+    while(i< len(arr1) and j<len(arr2)):
+        if arr1[i]<arr2[j]:
+            sum1+=arr1[i]
+            i+=1
+        elif arr2[j]<arr1[i]:
+            sum2+=arr2[j]
+            j+=1
+        else:
+            maxSum += max(sum1,sum2) + arr1[i]
+            i+=1
+            j+=1
+            sum1=0
+            sum2=0  
+            
+    while(i<len(arr1)):
+        sum1+=arr1[i]
+        i+=1
+    while(j<len(arr2)):
+        sum2 += arr2[j]
+        j+=1
+        
+    maxSum += max(sum1,sum2)
+    return maxSum
+
+if __name__ == "__main__":
+    # arr1 = [2, 3, 7, 10, 12]
+    # arr2 = [1, 5, 7, 8]
+    arr1 = [2, 3, 7, 10, 12, 15, 30, 34]
+    arr2 = [1, 5, 7, 8, 10, 15, 16, 19]
+    print("maxPathSum:",maxPathSum(arr1, arr2))
+#-------------------------------------------------------------
+# 5. Minimize the Maximum Difference Between the Heights
+def getMinDiff(arr, k, n):
+    arr.sort()
+    smallest =  arr[0]+k
+    largest = arr[n-1]-k
+    ans = largest-smallest
+    for i in range(0,n-1):
+        mi = min(smallest,arr[i+1]-k)
+        ma = max(largest,arr[i]+k)
+        #print(ma-mi)
+        if mi < 0:
+            continue
+        ans = min(ans,ma-mi)
+    return ans    
+if __name__ == "__main__":
+    k = 3
+    arr = [1, 5, 10, 15]
+    n = len(arr)
+    print("getMinDiff:",getMinDiff(arr, k, n))
+    
+#---------------------------------------------------------------   
+# # 6. Stock Buy and Sell Problem
+# prices = [7,1,5,3,6,4]
+# Output: 5
+def BuyAndSell1(arr,n):
+    n = len(arr)
+    if n <= 1:
+        return 0
+    buy = 10000
+    maxVal = 0
+    for num in arr: 
+        if num-buy>maxVal:
+            maxVal = num-buy
+        else:
+            buy = num
+    return maxVal    
+
+"""
+def BuyAndSell2(arr,n):
+    n = len(arr)
+    maxProfit = 0
+    for i in range(1,n):
+        if arr[i]>arr[i-1]:
+            maxProfit += arr[i]-arr[i-1]
+    return maxProfit
+"""           
+if __name__ == "__main__":
+    k = 3
+    prices = [1,2,5,14,5]
+    n = len(prices)
+    print("BuyAndSell1:",BuyAndSell1(prices, n))
+#-------------------------------------------------------
+# 7. Find the Largest Sum Contiguous Subarray
+def maxSum(arr, n):
+    currSum = arr[0]
+    maxSum = arr[0]
+    for i in range(1,n):
+        currSum = max(arr[i],currSum+arr[i])
+        maxSum = max(maxSum,currSum)
+    return maxSum
+if __name__ == "__main__":
+    arr = [-2, -3, 4, -1, -2, 1, 5, -3]
+    n = len(arr)
+    print("maxSum:",maxSum(arr, n))
+#---------------------------------------------------------------
+# 8. Find the Minimum Element in a Rotated and Sorted Array
+def findMin(arr, n):
+    minVal = 5000
+    lo,hi = 0,n-1
+    while(lo<hi):
+        mid = lo+(hi-lo)//2
+        if arr[mid]>arr[hi]:
+            lo = mid+1
+        else:
+            hi=mid 
+    return arr[lo]       
+        
+if __name__ == "__main__":
+    arr = [3,4,5,1,2]
+    n = len(arr)
+    print("findMin",findMin(arr, n))
+#------------------------------------------------------------------    
