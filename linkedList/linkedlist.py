@@ -1,3 +1,27 @@
+#output:
+# Given Linked list:1(null) -> 2(null) -> 3(null) -> 4(null) -> 5(null)
+# 1. reversed Linked list:5(null) -> 4(null) -> 3(null) -> 2(null) -> 1(null)
+# 2. middle of Linked list:3
+# 3. delete middle node:5(null) -> 4(null) -> 2(null) -> 1(null)
+# 4. Merge two sorted Linked List: 0(null) -> 1(null) -> 2(null) -> 3(null) -> 4(null) -> 5(null)
+# 5. delete Nth Node From End:
+# Linked List after Deletion:
+# 1(null) -> 3(null) -> 4(null) -> 5(null)
+# 6. deleteNode: 5(null) -> 6(null) -> 7(null) -> 8(null)
+# 7. get_intersection_node: 15
+# 8. detect_loop: True
+# 9.isPalindrome: True
+# 10. detectLoop: 10
+# 11. Add two Numnbers 8(null) -> 9(null) -> 9(null) -> 9(null) -> 0(null) -> 0(null) -> 0(null) -> 1(null)
+# 12. reverse_k_group:4(null) -> 3(null) -> 2(null) -> 1(null) -> 5(null) -> 6(null) -> 7(null)
+# 13. right rotate a linkedList:4(null) -> 5(null) -> 1(null) -> 2(null) -> 3(null)
+# 14. Remove duplicates inplace: [1, 2]
+# 15. findMaxConsecutiveOnes: 3
+# 16. 3 sum: [[-1, -1, 2], [-1, 0, 1]]
+# 17. Trapping Rainwater: 6
+# 18. Flatten List: 5 7 8 10 19 20 22 28 30 50 
+# 19. clone_linked_list: 1(3) -> 2(1) -> 3(5) -> 4(3) -> 5(2)
+#-------------------------------------------------------
 #Reverse a LinkedList
 def reverse_list(head):
     curr = head
